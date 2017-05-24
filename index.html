@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>jqJigsawPuzzle - Example 1</title>
+            <meta http-equiv="Content-Language" content="en-GB"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="keywords" content=""/>
+            <meta name="description" content=""/>
+    
+            <link rel="stylesheet" href="css/jqJigsawPuzzle.css" type="text/css"/>
+            <link rel="stylesheet" href="css/jquery-ui-1.8.22.custom.css" type="text/css"/>
+    
+            <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+            <script type="text/javascript" src="js/jquery-ui-1.8.22.custom.min.js"></script>
+            <script type="text/javascript" src="js/jqJigsawPuzzle.js"></script>		
+			<script type="text/javascript" src="js/jqSlidingPuzzle.js"></script>
+            <script type="text/javascript">		  
+				
+					
+				function selectingInput() {			
+					var link = document.getElementById('link');	
+					var file = document.getElementById('file');					
+					if(event.target.value == "link") 
+					{
+						
+						file.style.display = 'none';			
+						link.style.display = 'block';
+					}
+					else
+					{						
+						link.style.display = 'none';					
+						file.style.display = 'block';
+					}
+					return false;
+					
+				}		
+				function selectingPuzzle(){
+					var number = document.getElementById("selecting_pieces_number");
+					var size = document.getElementById("selecting_pieces_size");
+					if(event.target.value == "sliding")
+					{
+						size.style.display ="none";
+						number.style.display = "block";
+					}
+					else
+					{
+						number.style.display = "none";
+						size.style.display = "block";
+					}
+				}
+				
+				function previewFile() {
+				var preview = document.getElementById('my_puzzle');
+				var file    = document.querySelector('input[type=file]').files[0];
+				var reader  = new FileReader();
+
+				reader.addEventListener("load", function () {
+				preview.src = reader.result;
+				}, false);
+
+				if (file) {
+				reader.readAsDataURL(file);
+				}
+				}
+				
+			    function substitute()
+				{ 			  
+					var form = document.getElementById('user_form');
+					form.style.display = 'none';
+				    var link = document.getElementById('image_link');
+					var file = document.getElementById('image_file');
+					var input = document.getElementById('input_type');
+					if (input.value == "link")
+					{
+						if (link.value == "")
+						{
+							$("#my_puzzle").attr('src', 'http://coolwildlife.com/wp-content/uploads/galleries/post-3004/Fox%20Picture%20003.jpg');					
+						}
+						else
+						{
+							$("#my_puzzle").attr('src', link.value);
+						}	
+					}
+					else
+					{
+					}
+					var type = document.getElementById('puzzle_type').value;
+					if (type == "jigsaw")
+					{				
+						jQuery(document).ready(function() {
+						jqJigsawPuzzle.createPuzzleFromImage("#my_puzzle", {
+						piecesSize: document.querySelector('input[name="pieces_size"]:checked').value,
+						is_using_background_image: document.getElementById('background_image').checked
+						});
+						});	
+					}
+					else
+					{
+						jQuery(document).ready(function() {
+						jqSlidingPuzzle.createPuzzleFromImage("#my_puzzle", {
+						piecesNumber: document.getElementById('pieces_number').value,
+						is_using_background_image: document.getElementById('background_image').checked
+						});
+						});	
+					}
+				}
+            </script>
+    </head>                      
+    <body>
+		<div>
+			<form id ="user_form" >
+				<p>Chose input method :
+				<select id="input_type" size="1" name="input_type" onchange="selectingInput()">
+					<option value="link">Using link</option>
+					<option value="file">Browse file</option> 
+				</select>
+				<p>Chose puzzle type :
+				<select id="puzzle_type" size="1" name="puzzle_type" onchange="selectingPuzzle()">
+					<option value="jigsaw">Jigsaw Puzzle</option>
+					<option value="sliding">Sliding Puzzle</option> 
+				</select>
+				</p>
+	
+				<p id ="link">Image Link : <input id ="image_link" type="text" name="imageLink" value="" width="48" height="48"/></p>
+			    <p id ="file" hidden>Image File : <input id ="image_file"   type="file" name="imageFile" value ="" width="48" height="48" onchange ="previewFile()"/></p>
+				<p>Background Image : <input id = "background_image" type="checkbox" value = "using_background_image" ></p>
+				<p id ="selecting_pieces_size">Pieces Size :
+					<input type="radio" name="pieces_size" value="small" checked> Small
+					<input type="radio" name="pieces_size" value="normal"> Normal
+					<input type="radio" name="pieces_size" value="big"> Big <br />
+				</p>	
+				<p id ="selecting_pieces_number" hidden>Number of pieces:
+					<select id ="pieces_number" size="1" name="pieces_number" onchange= "">
+						<option value= "3">3 x 3</option>
+						<option value= "4">4 x 4</option> 
+						<option value= "5">5 x 5</option>
+						<option value= "6">6 x 6</option> 
+						<option value= "7">7 x 7</option>
+						<option value= "8">8 x 8</option> 
+					</select>
+				</p>					
+				<a id = "create_button" href ="#" onclick = "substitute()">Create Puzzle</a> 
+						
+			</form>
+		</div>
+        <div>
+            <img id="my_puzzle" src="" alt=""/>		
+        </div>
+    </body>
+</html>
